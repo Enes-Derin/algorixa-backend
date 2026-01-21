@@ -64,7 +64,6 @@ public class AppConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:5173",
                 "https://algorixa.com.tr",
                 "https://www.algorixa.com.tr"
         ));
