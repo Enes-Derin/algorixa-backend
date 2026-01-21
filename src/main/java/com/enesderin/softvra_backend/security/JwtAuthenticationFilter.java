@@ -32,7 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
