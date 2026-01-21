@@ -35,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
             projectResponse.setTitle(project.getTitle());
             projectResponse.setDescription(project.getDescription());
             projectResponse.setImageUrl(project.getImageUrl());
+            projectResponse.setLink(project.getLink());
             projectResponse.setCreatedAt(project.getCreatedAt());
             projectResponseList.add(projectResponse);
         }
@@ -47,6 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setTitle(projectRequest.getTitle());
         project.setDescription(projectRequest.getDescription());
         project.setCreatedAt(LocalDateTime.now());
+        project.setLink(projectRequest.getLink());
 
         if (projectRequest.getImageUrl() != null && !projectRequest.getImageUrl().isEmpty()) {
             try {
@@ -85,6 +87,7 @@ public class ProjectServiceImpl implements ProjectService {
             project.setTitle(projectRequest.getTitle());
             project.setDescription(projectRequest.getDescription());
             project.setCreatedAt(LocalDateTime.now());
+            project.setLink(projectRequest.getLink());
 
             if (projectRequest.getImageUrl() != null && !projectRequest.getImageUrl().isEmpty()) {
 

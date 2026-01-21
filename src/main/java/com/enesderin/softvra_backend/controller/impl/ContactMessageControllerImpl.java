@@ -37,4 +37,10 @@ public class ContactMessageControllerImpl extends RestBaseController implements 
         contactMessageService.markAsRead(id);
         return RootEntity.ok("okundu");
     }
+
+    @DeleteMapping("/{id}")
+    public RootEntity<String> deleteMessage(@PathVariable Long id) {
+        contactMessageService.deleteMessage(id);
+        return ok("Message deleted successfully");
+    }
 }

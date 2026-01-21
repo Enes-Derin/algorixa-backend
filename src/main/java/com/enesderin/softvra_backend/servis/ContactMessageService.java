@@ -12,4 +12,5 @@ public interface ContactMessageService {
     List<ContactMessageResponse> getAllMessages();
 
     void markAsRead(Long id);
+    void deleteMessage(Long id);
 }

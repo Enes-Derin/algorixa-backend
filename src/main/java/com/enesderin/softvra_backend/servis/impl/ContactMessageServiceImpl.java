@@ -72,4 +72,9 @@ public class ContactMessageServiceImpl implements ContactMessageService {
         message.setRead(true);
         repository.save(message);
     }
+
+    @Override
+    public void deleteMessage(Long id) {
+        repository.deleteById(id);
+    }
 }
