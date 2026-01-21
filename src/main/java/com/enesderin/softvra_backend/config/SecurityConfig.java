@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/users/admin/**").authenticated()
                 .requestMatchers("/project/admin/**").authenticated()
                 .requestMatchers("/contact/admin/**").authenticated()
+                .requestMatchers("/auth/**").permitAll()
                 .anyRequest().permitAll()
         );
 
