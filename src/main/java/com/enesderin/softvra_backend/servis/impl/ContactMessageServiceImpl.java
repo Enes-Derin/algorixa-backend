@@ -22,30 +22,34 @@ public class ContactMessageServiceImpl implements ContactMessageService {
 
     public void handleNewMessage(ContactMessageRequest message) {
 
-        message.setCreatedAt(LocalDateTime.now());
-        message.setRead(false);
-
         ContactMessage contactMessage = new ContactMessage();
         contactMessage.setMessage(message.getMessage());
         contactMessage.setName(message.getName());
         contactMessage.setEmail(message.getEmail());
         contactMessage.setCreatedAt(LocalDateTime.now());
         contactMessage.setRead(false);
+
         repository.save(contactMessage);
 
-        // Sana mail
-        mailService.sendAdminNotification(
-                message.getName(),
-                message.getEmail(),
-                message.getMessage()
-        );
+        try {
+            // Sana mail
+            mailService.sendAdminNotification(
+                    message.getName(),
+                    message.getEmail(),
+                    message.getMessage()
+            );
 
-        // Kullanıcıya otomatik cevap
-        mailService.sendAutoReplyWithOffer(
-                message.getEmail(),
-                message.getName()
-        );
+            // Kullanıcıya otomatik cevap
+            mailService.sendAutoReplyWithOffer(
+                    message.getEmail(),
+                    message.getName()
+            );
+        } catch (Exception e) {
+            // 🔴 MAIL HATASI LOG’LA AMA REQUEST’İ BOZMA
+            System.err.println("Mail gönderim hatası: " + e.getMessage());
+        }
     }
+
 
     @Override
     public List<ContactMessageResponse> getAllMessages() {
