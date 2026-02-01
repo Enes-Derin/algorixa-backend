@@ -2,7 +2,6 @@ package com.enesderin.softvra_backend.servis;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,23 +12,39 @@ public class MailService {
 
     private final JavaMailSender mailSender;
 
-    // Sana gelen bildirim (PDF eklemeden)
+    // Sana gelen bildirim
     public void sendAdminNotification(String fromName, String fromEmail, String message) {
         try {
             MimeMessage mail = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mail, false, "UTF-8");
 
             helper.setTo("enesderin.contact@gmail.com");
-            helper.setSubject("Yeni İletişim Mesajı");
+            helper.setSubject("🔔 Yeni İletişim Talebi - " + fromName);
             helper.setText("""
-                    Yeni bir mesaj aldınız.
-
-                    İsim: %s
-                    E-posta: %s
-
-                    Mesaj:
+                    ═══════════════════════════════════════
+                    YENİ İLETİŞİM TALEBİ
+                    ═══════════════════════════════════════
+                    
+                    👤 İsim: %s
+                    📧 E-posta: %s
+                    📅 Tarih: %s
+                    
+                    ───────────────────────────────────────
+                    MESAJ İÇERİĞİ:
+                    ───────────────────────────────────────
+                    
                     %s
-                    """.formatted(fromName, fromEmail, message));
+                    
+                    ═══════════════════════════════════════
+                    
+                    ⚠️ En kısa sürede yanıt verilmesi önerilir.
+                    """.formatted(
+                    fromName,
+                    fromEmail,
+                    java.time.LocalDateTime.now()
+                            .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                    message
+            ));
 
             mailSender.send(mail);
 
@@ -38,48 +53,73 @@ public class MailService {
         }
     }
 
-    // Kullanıcıya otomatik cevap + TEKLİF PDF
-    public void sendAutoReplyWithOffer(String toEmail, String name) {
-
+    // Kullanıcıya profesyonel bilgilendirme maili
+    public void sendAutoReplyWithInformation(String toEmail, String name) {
         try {
             MimeMessage mail = mailSender.createMimeMessage();
 
-            // ⚠️ multipart = true
-            MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+            // Multipart gerekmediği için false
+            MimeMessageHelper helper = new MimeMessageHelper(mail, false, "UTF-8");
 
             helper.setTo(toEmail);
-            helper.setSubject("Dijital Hizmet ve Çözüm Teklifimiz | Algorixa");
+            helper.setFrom("enesderin.contact@gmail.com", "Algorixa");
+            helper.setSubject("✅ Talebiniz Alındı - Algorixa Kurumsal Web & Yazılım");
 
             helper.setText("""
-                    Merhaba %s,
-
-                    İletişim talebiniz alınmıştır.
-
-                    İhtiyacınıza yönelik hazırlanmış
-                    dijital hizmet ve çözüm teklifimizi
-                    ekte bulabilirsiniz.
-
-                    İnceledikten sonra sorularınızı
-                    memnuniyetle yanıtlarız.
-
-                    Saygılarımla,
+                    Sayın %s,
                     
+                    İletişim talebiniz başarıyla alınmıştır. 
+                    
+                    📋 SÜREÇ HAKKINDA BİLGİLENDİRME
+                    ═══════════════════════════════════════
+                    
+                    ✓ Talebiniz inceleniyor
+                    ✓ En geç 24 saat içinde size dönüş yapacağız
+                    ✓ Proje detaylarınızı değerlendiriyoruz
+                    ✓ Size özel teklif hazırlanacak
+                    
+                    ───────────────────────────────────────
+                    
+                    💼 HİZMETLERİMİZ
+                    
+                    🌐 Kurumsal Web Siteleri
+                    ⚡ Özel Yazılım Geliştirme
+                    🎨 UI/UX Tasarım Hizmetleri
+                    🔧 Teknik Destek & Bakım
+                    
+                    ───────────────────────────────────────
+                    
+                    📞 ACİL İHTİYAÇ İÇİN
+                    
+                    WhatsApp: +90 546 970 54 51
+                    E-posta: enesderin.contact@gmail.com
+                    Web: https://www.algorixa.com.tr
+                    
+                    ═══════════════════════════════════════
+                    
+                    İşletmenizin başarılarına ortak olmaktan 
+                    mutluluk duyarız.
+                    
+                    Saygılarımızla,
                     
                     Algorixa
-                    Dijital Çözümler
+                    "Fikirleri Kodluyoruz"
+                    
+                    ───────────────────────────────────────
+                    
+                    💡 İpucu: Proje detaylarınızı ne kadar 
+                    detaylı paylaşırsanız, size o kadar 
+                    hızlı ve doğru teklif sunabiliriz.
+                    
+                    📌 Bu e-posta otomatik olarak gönderilmiştir.
+                    Lütfen yanıtlamayın. İletişim için yukarıdaki
+                    kanalları kullanabilirsiniz.
                     """.formatted(name));
-
-            // 📎 PDF EKLE
-            ClassPathResource pdf = new ClassPathResource(
-                    "static/Dijital-Çözümler.pdf"
-            );
-
-            helper.addAttachment("Dijital-Çözümler.pdf", pdf);
 
             mailSender.send(mail);
 
         } catch (Exception e) {
-            throw new RuntimeException("Teklif PDF maili gönderilemedi", e);
+            throw new RuntimeException("Bilgilendirme maili gönderilemedi", e);
         }
     }
 }

@@ -40,7 +40,7 @@ public class ContactMessageServiceImpl implements ContactMessageService {
             );
 
             // Kullanıcıya otomatik cevap
-            mailService.sendAutoReplyWithOffer(
+            mailService.sendAutoReplyWithInformation(
                     message.getEmail(),
                     message.getName()
             );
