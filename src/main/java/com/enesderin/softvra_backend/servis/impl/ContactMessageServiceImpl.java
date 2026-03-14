@@ -26,6 +26,10 @@ public class ContactMessageServiceImpl implements ContactMessageService {
         contactMessage.setMessage(message.getMessage());
         contactMessage.setName(message.getName());
         contactMessage.setEmail(message.getEmail());
+        contactMessage.setPhone(message.getPhone());
+        contactMessage.setCompany(message.getCompany());
+        contactMessage.setService(message.getService());
+        contactMessage.setBudget(message.getBudget());
         contactMessage.setCreatedAt(LocalDateTime.now());
         contactMessage.setRead(false);
 
@@ -60,6 +64,10 @@ public class ContactMessageServiceImpl implements ContactMessageService {
             contactMessageResponse.setId(contactMessage.getId());
             contactMessageResponse.setName(contactMessage.getName());
             contactMessageResponse.setEmail(contactMessage.getEmail());
+            contactMessageResponse.setPhone(contactMessage.getPhone());
+            contactMessageResponse.setCompany(contactMessage.getCompany());
+            contactMessageResponse.setService(contactMessage.getService());
+            contactMessageResponse.setBudget(contactMessage.getBudget());
             contactMessageResponse.setMessage(contactMessage.getMessage());
             contactMessageResponse.setCreatedAt(contactMessage.getCreatedAt());
             contactMessageResponse.setRead(contactMessage.getRead());

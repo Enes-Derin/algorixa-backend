@@ -1,14 +1,16 @@
+// ContactMessageRepository.java - GÜNCELLEME
 package com.enesderin.softvra_backend.repo;
 
 import com.enesderin.softvra_backend.model.ContactMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ContactMessageRepository extends JpaRepository<ContactMessage,Long> {
-    // Okunmamış mesajlar
-    List<ContactMessage> findByReadFalse();
+@Repository
+public interface ContactMessageRepository extends JpaRepository<ContactMessage, Long> {
 
-    // En yeni mesajlar üstte
     List<ContactMessage> findAllByOrderByCreatedAtDesc();
+
+    Long countByReadFalse(); // EKLE
 }

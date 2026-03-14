@@ -1,5 +1,8 @@
+// Role.java - REVİZE
 package com.enesderin.softvra_backend.model;
 
 public enum Role {
-    ADMIN
+    SUPER_ADMIN,
+    ADMIN,
+    EDITOR
 }

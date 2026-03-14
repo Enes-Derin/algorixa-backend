@@ -24,6 +24,13 @@ public class ContactMessageRequest {
     @Email
     private String email;
 
+    private String phone;
+
+    private String company;
+
+    private String service;
+    private String budget;
+
     @NotNull
     private String message;
 

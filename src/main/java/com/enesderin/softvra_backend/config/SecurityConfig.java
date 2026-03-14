@@ -1,12 +1,11 @@
+// SecurityConfig.java - REVİZE
 package com.enesderin.softvra_backend.config;
-
 
 import com.enesderin.softvra_backend.exception.handler.AuthEntryPoint;
 import com.enesderin.softvra_backend.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,20 +22,28 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final AuthEntryPoint authEntryPoint;
-    private final CorsConfigurationSource corsConfigurationSource; // EKLE
+    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource));
         http.csrf(csrf -> csrf.disable());
+
         http.authorizeHttpRequests(auth -> auth
+                // Public endpoints
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/contact").permitAll() // Public contact form
+
+                // Admin endpoints - Authentication required
+                .requestMatchers("/api/admin/**").authenticated()
                 .requestMatchers("/users/admin/**").authenticated()
                 .requestMatchers("/project/admin/**").authenticated()
                 .requestMatchers("/contact/admin/**").authenticated()
+
                 .anyRequest().permitAll()
         );
-
 
         http.exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint));
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

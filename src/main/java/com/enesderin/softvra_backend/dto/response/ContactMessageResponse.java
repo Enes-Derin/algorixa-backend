@@ -23,6 +23,14 @@ public class ContactMessageResponse {
 
     private String message;
 
+    private String phone;
+
+    private String company;
+
+    private String service;
+
+    private String budget;
+
     private LocalDateTime createdAt;
 
     private Boolean read = false;

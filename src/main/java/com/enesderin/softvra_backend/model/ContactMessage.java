@@ -24,6 +24,17 @@ public class ContactMessage {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = true)
+    private String phone;
+
+    @Column(nullable = true)
+    private String company;
+
+    @Column(nullable = true)
+    private String service;
+
+    @Column(nullable = true)
+    private String budget;
 
     @Column(columnDefinition = "TEXT")
     private String message;
